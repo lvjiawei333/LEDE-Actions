@@ -19,8 +19,8 @@ on:
       - main
     paths:
       - 'K2P32512USB.config'
-  schedule:
-    - cron: 0 0 * * 5
+  #schedule:
+  #  - cron: 0 0 * * 5
   watch:
     types: started
 
