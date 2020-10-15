@@ -18,8 +18,15 @@ on:
         description: 'SSH connection to Actions'
         required: false
         default: 'false'
+  push:
+    branches:
+      - main
+    paths:
+      - 'RM2100.config'        
   schedule:
     - cron: 0 3 * * 5
+  watch:
+    types: started      
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
