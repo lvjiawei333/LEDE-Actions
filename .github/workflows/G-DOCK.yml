@@ -17,12 +17,7 @@ on:
       ssh:
         description: 'SSH connection to Actions'
         required: false
-        default: 'false'
-  push:
-    branches:
-      - main
-    paths:
-      - 'G-DOCK.config'        
+        default: 'false'    
   schedule:
     - cron: 0 1 * * 5
   watch:
