@@ -23,10 +23,10 @@ on:
       - main
     paths:
       - 'RM2100.config'        
-  schedule:
-    - cron: 0 0 * * 5
-  watch:
-    types: started      
+  #schedule:
+    #- cron: 0 0 * * 5
+ # watch:
+    #types: started      
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
