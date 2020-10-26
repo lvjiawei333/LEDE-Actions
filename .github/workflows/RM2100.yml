@@ -23,8 +23,8 @@ on:
       - main
     paths:
       - 'RM2100.config'        
-  schedule:
-    - cron: 0 0 * * 5
+  #schedule:
+   # - cron: 0 0 * * 5
   watch:
      types: started      
 
