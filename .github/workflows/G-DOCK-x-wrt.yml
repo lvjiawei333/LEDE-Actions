@@ -24,12 +24,12 @@ on:
      types: started  
 
 env:
-  REPO_URL: https://github.com/Boos4721/openwrt
+  REPO_URL: https://github.com/x-wrt/x-wrt
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: R619AC128M-Boos4721.config
-  DIY_P1_SH: diy-part1-Boos4721.sh
-  DIY_P2_SH: diy-part2-Boos4721.sh
+  DIY_P1_SH: diy-part1-x-wrt.sh
+  DIY_P2_SH: diy-part2-x-wrt.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: false
