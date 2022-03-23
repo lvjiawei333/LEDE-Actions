@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: G-DOCK-Boos4721
+name: G-DOCK-x-wrt
 
 on:
   repository_dispatch:
