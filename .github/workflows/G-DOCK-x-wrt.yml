@@ -27,7 +27,7 @@ env:
   REPO_URL: https://github.com/x-wrt/x-wrt
   REPO_BRANCH: master
   FEEDS_CONF: feeds.conf.default
-  CONFIG_FILE: R619AC128M-Boos4721.config
+  CONFIG_FILE: R619AC128M-x-wrt.config
   DIY_P1_SH: diy-part1-x-wrt.sh
   DIY_P2_SH: diy-part2-x-wrt.sh
   UPLOAD_BIN_DIR: false
