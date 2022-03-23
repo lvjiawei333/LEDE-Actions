@@ -11,7 +11,7 @@
 #
 
 Modify default IP
-sed -i 's/10.10.10.1/192.168.123.2/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.15.1/192.168.123.2/g' package/base-files/files/bin/config_generate
 #git clone https://github.com/kenzok8/openwrt-packages package/openwrt-packages
 #git clone https://github.com/kenzok8/small package/small
 #git clone https://github.com/liuran001/openwrt-packages package/openwrt-packages
