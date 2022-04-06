@@ -17,7 +17,7 @@ sed -i 's/192.168.1.1/192.168.123.2/g' package/base-files/files/bin/config_gener
 #git clone https://github.com/liuran001/openwrt-packages package/openwrt-packages
 #git clone https://hub.fastgit.org/OpenWrt-Actions/openwrt-package-lienol.git package/openwrt-package-lienol
 复制内核5.10版本CPU超频补丁
-\cp -rf preset-models/322-mt7621-fix-cpu-clk-add-clkdev.patch target/linux/ramips/patches-5.10/322-mt7621-fix-cpu-clk-add-clkdev.patch
+\cp -rf 322-mt7621-fix-cpu-clk-add-clkdev.patch target/linux/ramips/patches-5.10/322-mt7621-fix-cpu-clk-add-clkdev.patch
 #设置WIFI
 #sed -i 's/OpenWrt/coolxiaomi/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 #sed -i 's/wireless.default_radio${devidx}.encryption=none/wireless.default_radio${devidx}.encryption=psk-mixed/g' package/kernel/mac80211/files/lib/wifi/mac80211.sh
