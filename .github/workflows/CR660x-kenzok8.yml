@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: CR660x
+name: CR660x-kenzok8
 
 on:
   repository_dispatch:
