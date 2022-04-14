@@ -18,15 +18,10 @@ on:
         description: 'SSH connection to Actions'
         required: false
         default: 'false'
-  push:
-    branches:
-      - main
-    paths:
-      - 'RM2100-kenzok8.config'        
   #schedule:
-   # - cron: 0 0 * * 5
+    #- cron: 0 8 * * 5
   watch:
-   types: started      
+     types: started  
 
 env:
   REPO_URL: https://github.com/coolsnowwolf/lede
