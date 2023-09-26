@@ -8,7 +8,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: AX6S
+name: AX6S1
 
 on:
   workflow_dispatch:
