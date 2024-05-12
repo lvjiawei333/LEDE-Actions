@@ -37,64 +37,16 @@ env:
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
-  UPLOAD_COWTRANSFER: false
-  UPLOAD_WETRANSFER: true
   UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
-# 删除无用文件以增加编译空间
-  DELETE_USELESS_FILES: true
-# 删除早期的 workflow 任务
-  DELETE_OLD_WORKFLOW: false
-# Cache 加速编译
-  CACHE_ACCELERATE: false
   
 jobs:
   build:
     runs-on: ubuntu-22.04
-    permissions:
-      issues: write
-      pull-requests: write
-      contents: write
 
     steps:
-    - name: "Optimize disk space"
-      if: env.DELETE_USELESS_FILES == 'true' && !cancelled()
-      uses: "hugoalh/disk-space-optimizer-ghaction@v0.8.0"
-      with:
-        operate_sudo: "True"
-        general_include: ".+"
-        general_exclude: |-
-          ^GCC$
-          ^G\+\+$
-          Clang
-          LLVM
-        docker_include: ".+"
-        docker_prune: "True"
-        docker_clean: "True"
-        apt_prune: "True"
-        apt_clean: "True"
-        homebrew_prune: "True"
-        homebrew_clean: "True"
-        npm_prune: "True"
-        npm_clean: "True"
-        os_swap: "True"
-
-    - name: Free up disk space
-      if: env.DELETE_USELESS_FILES == 'true' && !cancelled()
-      uses: easimon/maximize-build-space@master
-      with: 
-        root-reserve-mb: 2048
-        swap-size-mb: 1
-        remove-dotnet: 'true'
-        remove-android: 'true'
-        remove-haskell: 'true'
-        remove-codeql: 'true'
-        remove-docker-images: 'true'
-
     - name: Checkout
       uses: actions/checkout@main
-      with:
-        fetch-depth: 0
 
     - name: Initialization environment
       env:
@@ -116,17 +68,6 @@ jobs:
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-
-    - name: Accelerate
-      if: env.CACHE_ACCELERATE == 'true'
-      uses: klever1988/cachewrtbuild@main
-      with:
-        ccache: false
-        toolchain: true
-        skip: true
-        clean: true
-        prefix: ${{ github.workspace }}/openwrt
-
 
     - name: Load custom feeds
       run: |
@@ -214,39 +155,6 @@ jobs:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
-    - name: Upload firmware to cowtransfer
-      id: cowtransfer
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
-      run: |
-        curl -fsSL git.io/file-transfer | sh
-        ./transfer cow --block 2621440 -s -p 64 --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
-        echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
-        echo "::set-output name=url::$(cat cowtransfer.log | grep https | cut -f3 -d" ")"
-    - name: Upload firmware to WeTransfer
-      id: wetransfer
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
-      run: |
-        curl -fsSL git.io/file-transfer | sh
-        ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
-        echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
-        echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"
-    - name: Generate release tag
-      if: env.UPLOAD_RELEASE == 'true' && !cancelled()
-      run: |
-        echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
-        touch release.txt
-        [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
-        [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
-        echo "::set-output name=status::success"
-    - name: Upload firmware to release
-      uses: softprops/action-gh-release@v1
-      if: steps.tag.outputs.status == 'success' && !cancelled()
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ steps.tag.outputs.release_tag }}
-        body_path: release.txt
-        files: ${{ env.FIRMWARE }}/*
 
     - name: Delete workflow runs
       uses: Mattraks/delete-workflow-runs@main
@@ -262,6 +170,3 @@ jobs:
         delete_tags: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
- 
