@@ -117,6 +117,35 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
+    - name: Accelerate
+      if: env.CACHE_ACCELERATE == 'true'
+      uses: klever1988/cachewrtbuild@main
+      with:
+        ccache: false
+        toolchain: true
+        skip: true
+        clean: true
+        prefix: ${{ github.workspace }}/openwrt
+
+    - name: Run Diy Scripts
+      run: |
+        echo "Free space:"
+        df -h
+        chmod +x Scripts/AutoBuild_*.sh
+        cd openwrt
+        if [ "${{ env.CACHE_ACCELERATE }}" == true ]
+        then
+            echo -e "\nCONFIG_DEVEL=y\nCONFIG_CCACHE=y\n" >> $GITHUB_WORKSPACE/Configs/$CONFIG_FILE
+        fi
+        cp $GITHUB_WORKSPACE/Configs/$CONFIG_FILE .config
+        source $GITHUB_WORKSPACE/Scripts/AutoBuild_DiyScript.sh
+        source $GITHUB_WORKSPACE/Scripts/AutoBuild_Function.sh
+        make defconfig
+        Firmware_Diy_Start
+        rm -f .config && cp $GITHUB_WORKSPACE/Configs/$CONFIG_FILE .config
+        Firmware_Diy_Main
+        Firmware_Diy
+        Firmware_Diy_Other
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
