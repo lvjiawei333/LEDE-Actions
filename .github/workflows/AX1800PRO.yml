@@ -121,15 +121,6 @@ jobs:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
 
-    - name: Organize files
-      id: organize
-      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
-      run: |
-        cd openwrt/bin/target/*/*
-        rm -rf packages
-        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-        echo "status=success" >> $GITHUB_OUTPUT
-
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
